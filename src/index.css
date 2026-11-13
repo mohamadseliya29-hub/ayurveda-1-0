@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #102b23;
+  --color-forest-deep: #0b1f1a;
+  --color-emerald: #167a55;
+  --color-emerald-bright: #1f9e6f;
+  --color-sage: #b8cdb7;
+  --color-ivory: #f7f3e9;
+  --color-gold: #c7a45d;
+  --color-gold-bright: #e3c886;
+  --color-charcoal: #17221d;
+
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- Base ---------- */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-forest);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(199, 164, 93, 0.35);
+  color: var(--color-ivory);
+}
+
+:focus-visible {
+  outline: 2px solid rgba(199, 164, 93, 0.8);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Slim elegant scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b1f1a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(199, 164, 93, 0.35);
+  border-radius: 8px;
+  border: 2px solid #0b1f1a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(199, 164, 93, 0.55);
+}
+
+/* ---------- Reusable surfaces ---------- */
+
+.glass {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.glass-strong {
+  background: rgba(16, 43, 35, 0.72);
+  border: 1px solid rgba(199, 164, 93, 0.22);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.gold-text {
+  background: linear-gradient(100deg, #e3c886 0%, #c7a45d 45%, #a9863f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyebrow-line {
+  position: relative;
+  padding-left: 2.75rem;
+}
+.eyebrow-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(199, 164, 93, 0.9));
+}
+
+/* ---------- Keyframe animations ---------- */
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--particle-opacity, 0.5);
+  }
+  90% {
+    opacity: var(--particle-opacity, 0.5);
+  }
+  100% {
+    transform: translate3d(var(--drift-x, 20px), var(--drift-y, -120px), 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(var(--sway-rot, 0deg)) translateY(0);
+  }
+  50% {
+    transform: rotate(calc(var(--sway-rot, 0deg) + 4deg)) translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate3d(var(--drift-x, 30px), 110vh, 0) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+.anim-float {
+  animation: float-y 9s ease-in-out infinite;
+}
+.anim-sway {
+  animation: sway 12s ease-in-out infinite;
+}
+.anim-glow {
+  animation: glow-pulse 5s ease-in-out infinite;
+}
+.anim-spin-slow {
+  animation: spin-slow 40s linear infinite;
+}
+
+.shimmer-bar {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+
+/* Progressive blur vignette for hero */
+.hero-vignette {
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(31, 158, 111, 0.16), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 110%, rgba(199, 164, 93, 0.1), transparent 65%),
+    radial-gradient(ellipse 60% 50% at 10% 110%, rgba(22, 122, 85, 0.14), transparent 65%);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .anim-float,
+  .anim-sway,
+  .anim-glow,
+  .anim-spin-slow,
+  .shimmer-bar::after {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
